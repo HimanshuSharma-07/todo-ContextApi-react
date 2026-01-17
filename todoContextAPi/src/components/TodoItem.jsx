@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { use, useState } from 'react'
+import {  useTodo }  from "../contexts/TodoContext"
 
 function TodoItem({ todo }) {
-    
+    const [isTodoEditable, setIsTodoEditable] = useState(false)
+    const [todoMsg, setTodoMsg] = useState(todo.todo)
+
+    const {updateTodo, deleteTodo, toggleComplete} = useTodo()
+
+    const editTodo = () => {
+        updateTodo(todo.id, {...todo, todo: todoMsg})
+        setIsTodoEditable(false)
+    }
+
+    const toggleCompleted = () => {
+        
+        toggleComplete(todo.id)
+    }
 
     return (
         <div
@@ -9,7 +23,7 @@ function TodoItem({ todo }) {
                 todo.completed ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
             }`}
         >
-            <input
+            <input 
                 type="checkbox"
                 className="cursor-pointer"
                 checked={todo.completed}
@@ -36,6 +50,7 @@ function TodoItem({ todo }) {
                 }}
                 disabled={todo.completed}
             >
+                
                 {isTodoEditable ? "📁" : "✏️"}
             </button>
             {/* Delete Todo Button */}
